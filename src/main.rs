@@ -1,22 +1,13 @@
-use std::io::{stdout, Error};
+mod term;
 
-use crossterm::{
-    event::{read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
-use tui::{
-    backend::CrosstermBackend,
-    widgets::{Block, Borders},
-    Terminal,
-};
+use std::io::Error;
+
+use crossterm::event::{read, Event, KeyCode};
+use term::{close_terminal, init_terminal};
+use tui::widgets::{Block, Borders};
 
 fn main() -> Result<(), Error> {
-    enable_raw_mode()?;
-    let mut stdout = stdout();
-    execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
-    let backend = CrosstermBackend::new(stdout);
-    let mut term = Terminal::new(backend)?;
+    let mut term = init_terminal()?;
 
     term.draw(|f| {
         let size = f.size();
@@ -31,12 +22,6 @@ fn main() -> Result<(), Error> {
     }
 
     // restore terminal
-    disable_raw_mode()?;
-    execute!(
-        term.backend_mut(),
-        LeaveAlternateScreen,
-        DisableMouseCapture
-    )?;
-    term.show_cursor()?;
+    close_terminal(&mut term)?;
     Ok(())
 }
