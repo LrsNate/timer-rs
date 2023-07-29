@@ -25,11 +25,7 @@ pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, s: &str) {
             shapes.append(&mut get_separator_shape(16.0, 1.0));
             shapes.append(&mut get_char_shape(18.0, 1.0, chars[2]));
             shapes.append(&mut get_char_shape(26.0, 1.0, chars[3]));
-            shapes.append(&mut get_small_char_shape(
-                34.0,
-                1.0,
-                s.chars().nth(4).unwrap(),
-            ));
+            shapes.append(&mut get_small_char_shape(34.0, 1.0, chars[4]));
 
             for line in shapes {
                 ctx.draw(&line);
