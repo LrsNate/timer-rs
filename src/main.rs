@@ -1,4 +1,5 @@
 mod draw;
+mod shapes;
 mod term;
 mod timer;
 
