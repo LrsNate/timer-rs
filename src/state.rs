@@ -1,13 +1,13 @@
 use crate::timer::Timer;
 
 pub struct AppState {
-    pub timer: Timer
+    pub timer: Timer,
 }
 
 impl AppState {
     pub fn new() -> AppState {
         AppState {
-            timer: Timer::new()
+            timer: Timer::new(),
         }
     }
 }

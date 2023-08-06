@@ -1,4 +1,4 @@
-use phf::{Map, phf_map};
+use phf::{phf_map, Map};
 use ratatui::{style::Color, widgets::canvas::Rectangle};
 
 const CHAR_CODES: Map<char, u8> = phf_map! {
@@ -15,11 +15,23 @@ const CHAR_CODES: Map<char, u8> = phf_map! {
 };
 
 fn horizontal_bar(x: f64, y: f64) -> Rectangle {
-    Rectangle { x, y, width: 4.0, height: 1.0, color: Color::White }
+    Rectangle {
+        x,
+        y,
+        width: 4.0,
+        height: 1.0,
+        color: Color::White,
+    }
 }
 
 fn vertical_bar(x: f64, y: f64) -> Rectangle {
-    Rectangle { x, y, width: 1.0, height: 4.0, color: Color::White }
+    Rectangle {
+        x,
+        y,
+        width: 1.0,
+        height: 4.0,
+        color: Color::White,
+    }
 }
 
 pub fn get_char_shape(x_offset: f64, y_offset: f64, c: char) -> Vec<Rectangle> {
@@ -51,11 +63,23 @@ pub fn get_char_shape(x_offset: f64, y_offset: f64, c: char) -> Vec<Rectangle> {
 }
 
 fn small_horizontal_bar(x: f64, y: f64) -> Rectangle {
-    Rectangle { x, y, width: 3.0, height: 1.0, color: Color::DarkGray }
+    Rectangle {
+        x,
+        y,
+        width: 3.0,
+        height: 1.0,
+        color: Color::DarkGray,
+    }
 }
 
 fn small_vertical_bar(x: f64, y: f64) -> Rectangle {
-    Rectangle { x, y, width: 1.0, height: 3.0, color: Color::DarkGray }
+    Rectangle {
+        x,
+        y,
+        width: 1.0,
+        height: 3.0,
+        color: Color::DarkGray,
+    }
 }
 
 pub fn get_small_char_shape(x_offset: f64, y_offset: f64, c: char) -> Vec<Rectangle> {

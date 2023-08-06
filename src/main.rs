@@ -1,6 +1,6 @@
 use std::{io::Error, time::Duration};
 
-use crossterm::event::{Event, KeyCode, poll, read};
+use crossterm::event::{poll, read, Event, KeyCode};
 
 use term::{close_terminal, init_terminal};
 
@@ -9,9 +9,9 @@ use crate::state::AppState;
 
 mod draw;
 mod shapes;
+mod state;
 mod term;
 mod timer;
-mod state;
 
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;

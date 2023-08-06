@@ -1,12 +1,12 @@
 use std::io::Stdout;
 
+use ratatui::layout::Rect;
 use ratatui::{
     backend::CrosstermBackend,
-    Frame,
     symbols::Marker,
-    widgets::{Block, Borders, canvas::Canvas},
+    widgets::{canvas::Canvas, Block, Borders},
+    Frame,
 };
-use ratatui::layout::Rect;
 
 use crate::shapes::{get_char_shape, get_separator_shape, get_small_char_shape};
 use crate::state::AppState;
