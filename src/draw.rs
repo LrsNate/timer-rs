@@ -6,12 +6,17 @@ use ratatui::{
     symbols::Marker,
     widgets::{Block, Borders, canvas::Canvas},
 };
+use ratatui::layout::Rect;
 
 use crate::shapes::{get_char_shape, get_separator_shape, get_small_char_shape};
 use crate::state::AppState;
 
-pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState) {
-    let size = f.size();
+pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState) {
+    let area = f.size();
+    draw_block(f, area, state);
+}
+
+pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
     let s = format!("{}", state.timer);
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
@@ -33,5 +38,5 @@ pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState)
                 ctx.draw(&line);
             }
         });
-    f.render_widget(canvas, size);
+    f.render_widget(canvas, area);
 }

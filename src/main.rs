@@ -1,15 +1,17 @@
+use std::{io::Error, time::Duration};
+
+use crossterm::event::{Event, KeyCode, poll, read};
+
+use term::{close_terminal, init_terminal};
+
+use crate::draw::draw_layout;
+use crate::state::AppState;
+
 mod draw;
 mod shapes;
 mod term;
 mod timer;
 mod state;
-
-use std::{io::Error, time::Duration};
-
-use crossterm::event::{poll, read, Event, KeyCode};
-use draw::draw_block;
-use term::{close_terminal, init_terminal};
-use crate::state::AppState;
 
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;
@@ -17,7 +19,7 @@ fn main() -> Result<(), Error> {
 
     loop {
         state.timer.tick();
-        term.draw(|f| draw_block(f, &state))?;
+        term.draw(|f| draw_layout(f, &state))?;
         if !poll(Duration::from_secs(0))? {
             continue;
         }
