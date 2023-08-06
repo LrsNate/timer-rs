@@ -18,13 +18,11 @@ pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState
         .direction(Direction::Vertical)
         .constraints([Constraint::Min(0), Constraint::Length(1)].as_ref())
         .split(f.size());
-    draw_block(f, chunks[0], state);
-    let text = Span::raw("Some text here");
-    let paragraph = Paragraph::new(text);
-    f.render_widget(paragraph, chunks[1]);
+    draw_timer_block(f, chunks[0], state);
+    draw_status_block(f, chunks[1], state);
 }
 
-pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
+pub fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
     let s = format!("{}", state.timer);
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
@@ -47,4 +45,15 @@ pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state
             }
         });
     f.render_widget(canvas, area);
+}
+
+pub fn draw_status_block(
+    f: &mut Frame<'_, CrosstermBackend<Stdout>>,
+    area: Rect,
+    state: &AppState,
+) {
+    let latency = state.timer.latency();
+    let text = Span::raw(format!("Latency: {} ms", latency.as_millis()));
+    let paragraph = Paragraph::new(text);
+    f.render_widget(paragraph, area);
 }

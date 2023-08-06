@@ -31,6 +31,10 @@ impl Timer {
     pub fn elapsed(&self) -> Duration {
         self.current_tick.duration_since(self.start)
     }
+
+    pub fn latency(&self) -> Duration {
+        self.current_tick.duration_since(self.previous_tick)
+    }
 }
 
 impl Display for Timer {
