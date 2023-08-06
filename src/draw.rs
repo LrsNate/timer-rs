@@ -1,6 +1,6 @@
 use std::io::Stdout;
 
-use tui::{
+use ratatui::{
     backend::CrosstermBackend,
     Frame,
     symbols::Marker,

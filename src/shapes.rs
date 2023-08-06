@@ -1,5 +1,5 @@
 use phf::{Map, phf_map};
-use tui::{style::Color, widgets::canvas::Rectangle};
+use ratatui::{style::Color, widgets::canvas::Rectangle};
 
 const CHAR_CODES: Map<char, u8> = phf_map! {
     '0' => 119,
