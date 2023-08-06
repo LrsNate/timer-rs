@@ -1,6 +1,8 @@
 use std::io::Stdout;
 
-use ratatui::layout::Rect;
+use ratatui::layout::{Constraint, Direction, Layout, Rect};
+use ratatui::text::Span;
+use ratatui::widgets::Paragraph;
 use ratatui::{
     backend::CrosstermBackend,
     symbols::Marker,
@@ -12,8 +14,14 @@ use crate::shapes::{get_char_shape, get_separator_shape, get_small_char_shape};
 use crate::state::AppState;
 
 pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState) {
-    let area = f.size();
-    draw_block(f, area, state);
+    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([Constraint::Min(0), Constraint::Length(1)].as_ref())
+        .split(f.size());
+    draw_block(f, chunks[0], state);
+    let text = Span::raw("Some text here");
+    let paragraph = Paragraph::new(text);
+    f.render_widget(paragraph, chunks[1]);
 }
 
 pub fn draw_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
