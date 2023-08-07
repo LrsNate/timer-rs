@@ -1,13 +1,13 @@
-use crate::timer::Timer;
+use crate::timer::Stopwatch;
 
 pub struct AppState {
-    pub timer: Timer,
+    pub stopwatch: Stopwatch,
 }
 
 impl AppState {
     pub fn new() -> AppState {
         AppState {
-            timer: Timer::new(),
+            stopwatch: Stopwatch::new(),
         }
     }
 }

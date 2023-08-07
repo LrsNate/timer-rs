@@ -3,16 +3,16 @@ use std::{
     time::{Duration, Instant},
 };
 
-pub struct Timer {
+pub struct Stopwatch {
     start: Instant,
     previous_tick: Instant,
     current_tick: Instant,
     paused_duration: Option<Duration>,
 }
 
-impl Timer {
-    pub fn new() -> Timer {
-        Timer {
+impl Stopwatch {
+    pub fn new() -> Stopwatch {
+        Stopwatch {
             start: Instant::now(),
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
@@ -59,7 +59,7 @@ impl Timer {
     }
 }
 
-impl Display for Timer {
+impl Display for Stopwatch {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let elapsed = self.elapsed();
         let minutes = elapsed.as_secs() / 60;

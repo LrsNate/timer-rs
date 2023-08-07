@@ -20,7 +20,7 @@ pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState
         .direction(Direction::Vertical)
         .constraints(
             [
-                Constraint::Length(3),
+                Constraint::Length(1),
                 Constraint::Min(0),
                 Constraint::Length(1),
             ]
@@ -33,13 +33,12 @@ pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState
 }
 
 fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
-    let titles = ["Tab1", "Tab2", "Tab3", "Tab4"]
+    let titles = ["Stopwatch", "Timer"]
         .iter()
         .cloned()
         .map(Line::from)
         .collect();
     let tabs = Tabs::new(titles)
-        .block(Block::default().title("Tabs").borders(Borders::ALL))
         .style(Style::default().fg(Color::White))
         .highlight_style(Style::default().fg(Color::Yellow))
         .divider(DOT);
@@ -47,10 +46,9 @@ fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, stat
 }
 
 fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
-    let s = format!("{}", state.timer);
+    let s = format!("{}", state.stopwatch);
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
-        .block(Block::default().title("Canvas").borders(Borders::ALL))
         .marker(Marker::Braille)
         .x_bounds([0.0, 40.0])
         .y_bounds([0.0, 13.0])
@@ -78,8 +76,8 @@ pub fn draw_status_block(
     area: Rect,
     state: &AppState,
 ) {
-    let latency = state.timer.latency();
+    let latency = state.stopwatch.latency();
     let text = Span::raw(format!("Latency: {} ms", latency.as_millis()));
-    let paragraph = Paragraph::new(text);
+    let paragraph = Paragraph::new(text).style(Style::default().fg(Color::Black).bg(Color::Cyan));
     f.render_widget(paragraph, area);
 }

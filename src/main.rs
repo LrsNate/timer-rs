@@ -18,15 +18,15 @@ fn main() -> Result<(), Error> {
     let mut state = AppState::new();
 
     loop {
-        state.timer.tick();
+        state.stopwatch.tick();
         term.draw(|f| draw_layout(f, &state))?;
         if !poll(Duration::from_secs(0))? {
             continue;
         }
         match read()? {
             Event::Key(event) if event.code == KeyCode::Char('q') => break,
-            Event::Key(event) if event.code == KeyCode::Char('r') => state.timer.reset(),
-            Event::Key(event) if event.code == KeyCode::Char('p') => state.timer.toggle_pause(),
+            Event::Key(event) if event.code == KeyCode::Char('r') => state.stopwatch.reset(),
+            Event::Key(event) if event.code == KeyCode::Char(' ') => state.stopwatch.toggle_pause(),
             _ => (),
         };
     }
