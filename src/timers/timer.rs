@@ -2,6 +2,8 @@ use std::time::{Duration, Instant};
 
 use crate::timers::timekeeper::Timekeeper;
 
+const DEFAULT_DURATION: Duration = Duration::from_secs(60);
+
 pub struct Timer {
     target: Instant,
     previous_tick: Instant,
@@ -11,7 +13,7 @@ pub struct Timer {
 
 impl Timer {
     pub fn new() -> Timer {
-        let default_duration = Duration::from_secs(25 * 60);
+        let default_duration = DEFAULT_DURATION;
         Timer {
             target: Instant::now() + default_duration,
             previous_tick: Instant::now(),
@@ -28,8 +30,8 @@ impl Timekeeper for Timer {
     }
 
     fn reset(&mut self) {
-        self.target = Instant::now() + Duration::from_secs(25 * 60);
-        self.paused_duration = Some(Duration::from_secs(25 * 60));
+        self.target = Instant::now() + DEFAULT_DURATION;
+        self.paused_duration = Some(DEFAULT_DURATION);
         self.tick();
     }
 
