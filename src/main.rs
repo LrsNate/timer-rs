@@ -5,9 +5,11 @@ use crossterm::event::{poll, read, Event, KeyCode};
 use term::{close_terminal, init_terminal};
 
 use crate::draw::draw_layout;
+use crate::events::handle_key_event;
 use crate::state::AppState;
 
 mod draw;
+mod events;
 mod shapes;
 mod state;
 mod term;
@@ -25,8 +27,7 @@ fn main() -> Result<(), Error> {
         }
         match read()? {
             Event::Key(event) if event.code == KeyCode::Char('q') => break,
-            Event::Key(event) if event.code == KeyCode::Char('r') => state.stopwatch.reset(),
-            Event::Key(event) if event.code == KeyCode::Char(' ') => state.stopwatch.toggle_pause(),
+            Event::Key(event) => handle_key_event(event.code, &mut state),
             _ => (),
         };
     }

@@ -34,6 +34,7 @@ fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, stat
         .map(Line::from)
         .collect();
     let tabs = Tabs::new(titles)
+        .select(state.selected_tab)
         .style(Style::default().fg(Color::White))
         .highlight_style(Style::default().fg(Color::Yellow))
         .divider(DOT);
