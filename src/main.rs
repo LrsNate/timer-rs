@@ -26,6 +26,7 @@ fn main() -> Result<(), Error> {
         match read()? {
             Event::Key(event) if event.code == KeyCode::Char('q') => break,
             Event::Key(event) if event.code == KeyCode::Char('r') => state.timer.reset(),
+            Event::Key(event) if event.code == KeyCode::Char('p') => state.timer.toggle_pause(),
             _ => (),
         };
     }

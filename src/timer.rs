@@ -7,6 +7,7 @@ pub struct Timer {
     start: Instant,
     previous_tick: Instant,
     current_tick: Instant,
+    paused_duration: Option<Duration>
 }
 
 impl Timer {
@@ -15,6 +16,7 @@ impl Timer {
             start: Instant::now(),
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
+            paused_duration: None
         }
     }
 
@@ -25,11 +27,30 @@ impl Timer {
 
     pub fn reset(&mut self) {
         self.start = Instant::now();
+        self.paused_duration = None;
         self.tick();
     }
 
+    pub fn toggle_pause(&mut self) {
+        self.tick();
+        if self.paused_duration.is_none() {
+            self.pause()
+        } else {
+            self.unpause()
+        }
+    }
+
+    fn pause(&mut self) {
+        self.paused_duration = Some(self.elapsed());
+    }
+
+    fn unpause(&mut self) {
+        self.start = self.current_tick - self.paused_duration.unwrap();
+        self.paused_duration = None;
+    }
+
     pub fn elapsed(&self) -> Duration {
-        self.current_tick.duration_since(self.start)
+        self.paused_duration.unwrap_or(self.current_tick.duration_since(self.start))
     }
 
     pub fn latency(&self) -> Duration {
