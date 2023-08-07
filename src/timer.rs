@@ -7,7 +7,7 @@ pub struct Timer {
     start: Instant,
     previous_tick: Instant,
     current_tick: Instant,
-    paused_duration: Option<Duration>
+    paused_duration: Option<Duration>,
 }
 
 impl Timer {
@@ -16,7 +16,7 @@ impl Timer {
             start: Instant::now(),
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
-            paused_duration: None
+            paused_duration: None,
         }
     }
 
@@ -50,7 +50,8 @@ impl Timer {
     }
 
     pub fn elapsed(&self) -> Duration {
-        self.paused_duration.unwrap_or(self.current_tick.duration_since(self.start))
+        self.paused_duration
+            .unwrap_or(self.current_tick.duration_since(self.start))
     }
 
     pub fn latency(&self) -> Duration {
