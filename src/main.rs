@@ -20,7 +20,7 @@ fn main() -> Result<(), Error> {
     let mut state = AppState::new();
 
     loop {
-        state.stopwatch.tick();
+        state.timekeeper_mut().tick();
         term.draw(|f| draw_layout(f, &state))?;
         if !poll(Duration::from_secs(0))? {
             continue;

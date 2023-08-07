@@ -42,7 +42,7 @@ fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, stat
 }
 
 fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
-    let s = format!("{}", state.stopwatch);
+    let s = state.timekeeper().display();
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
         .marker(Marker::Braille)
@@ -72,7 +72,7 @@ pub fn draw_status_block(
     area: Rect,
     state: &AppState,
 ) {
-    let latency = state.stopwatch.latency();
+    let latency = state.timekeeper().latency();
     let text = Span::raw(format!("Latency: {} ms", latency.as_millis()));
     let paragraph = Paragraph::new(text).style(Style::default().fg(Color::Black).bg(Color::Blue));
     f.render_widget(paragraph, area);
