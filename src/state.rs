@@ -1,4 +1,4 @@
-use crate::timer::Stopwatch;
+use crate::timers::stopwatch::Stopwatch;
 
 pub struct AppState {
     pub stopwatch: Stopwatch,

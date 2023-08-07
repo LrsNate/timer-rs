@@ -5,12 +5,7 @@ use ratatui::style::{Color, Style};
 use ratatui::symbols::DOT;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Paragraph, Tabs};
-use ratatui::{
-    backend::CrosstermBackend,
-    symbols::Marker,
-    widgets::{canvas::Canvas, Block, Borders},
-    Frame,
-};
+use ratatui::{backend::CrosstermBackend, symbols::Marker, widgets::canvas::Canvas, Frame};
 
 use crate::shapes::{get_char_shape, get_separator_shape, get_small_char_shape};
 use crate::state::AppState;

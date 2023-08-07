@@ -11,7 +11,7 @@ mod draw;
 mod shapes;
 mod state;
 mod term;
-mod timer;
+mod timers;
 
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;
