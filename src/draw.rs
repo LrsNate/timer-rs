@@ -36,7 +36,7 @@ fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, stat
     let tabs = Tabs::new(titles)
         .select(state.selected_tab)
         .style(Style::default().fg(Color::White))
-        .highlight_style(Style::default().fg(Color::Yellow))
+        .highlight_style(Style::default().fg(Color::Black).bg(Color::White))
         .divider(DOT);
     f.render_widget(tabs, area);
 }
@@ -74,6 +74,6 @@ pub fn draw_status_block(
 ) {
     let latency = state.stopwatch.latency();
     let text = Span::raw(format!("Latency: {} ms", latency.as_millis()));
-    let paragraph = Paragraph::new(text).style(Style::default().fg(Color::Black).bg(Color::Cyan));
+    let paragraph = Paragraph::new(text).style(Style::default().fg(Color::Black).bg(Color::Blue));
     f.render_widget(paragraph, area);
 }
