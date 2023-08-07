@@ -1,8 +1,10 @@
 use std::io::Stdout;
 
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
-use ratatui::text::Span;
-use ratatui::widgets::Paragraph;
+use ratatui::style::{Color, Style};
+use ratatui::symbols::DOT;
+use ratatui::text::{Line, Span};
+use ratatui::widgets::{Paragraph, Tabs};
 use ratatui::{
     backend::CrosstermBackend,
     symbols::Marker,
@@ -16,13 +18,35 @@ use crate::state::AppState;
 pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
-        .constraints([Constraint::Min(0), Constraint::Length(1)].as_ref())
+        .constraints(
+            [
+                Constraint::Length(3),
+                Constraint::Min(0),
+                Constraint::Length(1),
+            ]
+            .as_ref(),
+        )
         .split(f.size());
-    draw_timer_block(f, chunks[0], state);
-    draw_status_block(f, chunks[1], state);
+    draw_tabs_block(f, chunks[0], state);
+    draw_timer_block(f, chunks[1], state);
+    draw_status_block(f, chunks[2], state);
 }
 
-pub fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
+fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
+    let titles = ["Tab1", "Tab2", "Tab3", "Tab4"]
+        .iter()
+        .cloned()
+        .map(Line::from)
+        .collect();
+    let tabs = Tabs::new(titles)
+        .block(Block::default().title("Tabs").borders(Borders::ALL))
+        .style(Style::default().fg(Color::White))
+        .highlight_style(Style::default().fg(Color::Yellow))
+        .divider(DOT);
+    f.render_widget(tabs, area);
+}
+
+fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
     let s = format!("{}", state.timer);
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
@@ -35,7 +59,9 @@ pub fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect,
             let mut shapes = vec![];
             shapes.append(&mut get_char_shape(1.0, 1.0, chars[0]));
             shapes.append(&mut get_char_shape(9.0, 1.0, chars[1]));
-            shapes.append(&mut get_separator_shape(16.0, 1.0));
+            if ['0', '1', '2', '3', '4'].contains(&chars[4]) {
+                shapes.append(&mut get_separator_shape(16.0, 1.0));
+            }
             shapes.append(&mut get_char_shape(18.0, 1.0, chars[2]));
             shapes.append(&mut get_char_shape(26.0, 1.0, chars[3]));
             shapes.append(&mut get_small_char_shape(34.0, 1.0, chars[4]));
