@@ -23,18 +23,12 @@ impl AppState {
     }
 
     pub fn timekeeper(&self) -> &dyn Timekeeper {
-        if self.selected_tab == 0 {
-            &self.stopwatch
-        } else {
-            &self.timer
-        }
+        let timekeepers: [&dyn Timekeeper; 2] = [&self.stopwatch, &self.timer];
+        timekeepers[self.selected_tab]
     }
 
     pub fn timekeeper_mut(&mut self) -> &mut dyn Timekeeper {
-        if self.selected_tab == 0 {
-            &mut self.stopwatch
-        } else {
-            &mut self.timer
-        }
+        let timekeepers: [&mut dyn Timekeeper; 2] = [&mut self.stopwatch, &mut self.timer];
+        timekeepers[self.selected_tab]
     }
 }

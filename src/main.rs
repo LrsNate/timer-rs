@@ -14,6 +14,7 @@ mod shapes;
 mod state;
 mod term;
 mod timers;
+mod widgets;
 
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;

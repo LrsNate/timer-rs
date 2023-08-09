@@ -6,6 +6,7 @@ pub fn handle_key_event(keycode: KeyCode, state: &mut AppState) {
     match keycode {
         KeyCode::Char('1') => state.switch_tab(0),
         KeyCode::Char('2') => state.switch_tab(1),
+        KeyCode::Char('3') => state.switch_tab(2),
         KeyCode::Char('r') => state.timekeeper_mut().reset(),
         KeyCode::Char(' ') => state.timekeeper_mut().toggle_pause(),
         _ => (),
