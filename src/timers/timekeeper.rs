@@ -4,6 +4,7 @@ pub trait Timekeeper {
     fn tick(&mut self);
     fn reset(&mut self);
     fn toggle_pause(&mut self);
+    fn advance(&mut self) {}
 
     fn time(&self) -> Duration;
     fn latency(&self) -> Duration;

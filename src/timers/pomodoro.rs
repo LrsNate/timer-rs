@@ -1,36 +1,47 @@
+use std::borrow::ToOwned;
 use std::time::{Duration, Instant};
+
+use phf::{phf_map, Map};
 
 use crate::timers::timekeeper::Timekeeper;
 
-const DEFAULT_DURATION: Duration = Duration::from_secs(60);
+static DEFAULT_DURATION: Map<&str, u64> = phf_map! {
+    "WORK" => 25 * 60,
+    "REST" => 5* 60
+};
 
-pub struct Timer {
+pub struct PomodoroTimer {
+    current_phase: String,
     target: Instant,
     previous_tick: Instant,
     current_tick: Instant,
     paused_duration: Option<Duration>,
 }
 
-impl Timer {
-    pub fn new() -> Timer {
-        Timer {
-            target: Instant::now() + DEFAULT_DURATION,
+impl PomodoroTimer {
+    pub fn new() -> PomodoroTimer {
+        PomodoroTimer {
+            current_phase: "WORK".to_owned(),
+            target: Instant::now() + Duration::from_secs(DEFAULT_DURATION["WORK"]),
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
-            paused_duration: Some(DEFAULT_DURATION),
+            paused_duration: Some(Duration::from_secs(DEFAULT_DURATION["WORK"])),
         }
     }
 }
 
-impl Timekeeper for Timer {
+impl Timekeeper for PomodoroTimer {
     fn tick(&mut self) {
         self.previous_tick = self.current_tick;
         self.current_tick = Instant::now();
     }
 
     fn reset(&mut self) {
-        self.target = Instant::now() + DEFAULT_DURATION;
-        self.paused_duration = Some(DEFAULT_DURATION);
+        self.target =
+            Instant::now() + Duration::from_secs(DEFAULT_DURATION[&self.current_phase as &str]);
+        self.paused_duration = Some(Duration::from_secs(
+            DEFAULT_DURATION[&self.current_phase as &str],
+        ));
         self.tick();
     }
 
@@ -42,6 +53,15 @@ impl Timekeeper for Timer {
             self.target = self.current_tick + self.paused_duration.unwrap();
             self.paused_duration = None;
         }
+    }
+
+    fn advance(&mut self) {
+        self.current_phase = if self.current_phase == "WORK".to_owned() {
+            "REST".to_owned()
+        } else {
+            "WORK".to_owned()
+        };
+        self.reset();
     }
 
     fn time(&self) -> Duration {
