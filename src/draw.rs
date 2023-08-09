@@ -2,9 +2,8 @@ use std::io::Stdout;
 
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::style::{Color, Style};
-use ratatui::symbols::DOT;
-use ratatui::text::Line;
-use ratatui::widgets::Tabs;
+use ratatui::text::{Line, Span};
+use ratatui::widgets::{Block, Borders, Tabs};
 use ratatui::{backend::CrosstermBackend, Frame};
 
 use crate::state::AppState;
@@ -15,7 +14,7 @@ pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState
         .direction(Direction::Vertical)
         .constraints(
             [
-                Constraint::Length(1),
+                Constraint::Length(3),
                 Constraint::Min(0),
                 Constraint::Length(1),
             ]
@@ -35,8 +34,9 @@ fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, stat
         .collect();
     let tabs = Tabs::new(titles)
         .select(state.selected_tab)
+        .block(Block::default().borders(Borders::TOP.union(Borders::BOTTOM)))
         .style(Style::default().fg(Color::White))
         .highlight_style(Style::default().fg(Color::Black).bg(Color::White))
-        .divider(DOT);
+        .divider(Span::from("|"));
     f.render_widget(tabs, area);
 }
