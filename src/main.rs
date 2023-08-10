@@ -11,6 +11,7 @@ use crate::state::AppState;
 mod draw;
 mod events;
 mod shapes;
+mod sound;
 mod state;
 mod term;
 mod timers;
