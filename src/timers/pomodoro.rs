@@ -36,11 +36,8 @@ impl Timekeeper for PomodoroTimer {
     }
 
     fn reset(&mut self) {
-        self.target =
-            Instant::now() + Duration::from_secs(DEFAULT_DURATION[&self.current_phase as &str]);
-        self.paused_duration = Some(Duration::from_secs(
-            DEFAULT_DURATION[&self.current_phase as &str],
-        ));
+        self.target = Instant::now() + Duration::from_secs(DEFAULT_DURATION[self.current_phase]);
+        self.paused_duration = Some(Duration::from_secs(DEFAULT_DURATION[self.current_phase]));
         self.tick();
     }
 
