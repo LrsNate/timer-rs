@@ -1,3 +1,4 @@
+use crate::sound::SoundThread;
 use crate::timers::pomodoro::PomodoroTimer;
 use crate::timers::stopwatch::Stopwatch;
 use crate::timers::timekeeper::Timekeeper;
@@ -8,6 +9,7 @@ pub struct AppState {
     stopwatch: Stopwatch,
     timer: Timer,
     pomodoro: PomodoroTimer,
+    sound: SoundThread,
 }
 
 impl AppState {
@@ -17,6 +19,7 @@ impl AppState {
             stopwatch: Stopwatch::new(),
             timer: Timer::new(),
             pomodoro: PomodoroTimer::new(),
+            sound: SoundThread::new(),
         }
     }
 
@@ -34,5 +37,9 @@ impl AppState {
         let timekeepers: [&mut dyn Timekeeper; 3] =
             [&mut self.stopwatch, &mut self.timer, &mut self.pomodoro];
         timekeepers[self.selected_tab]
+    }
+
+    pub fn play_sound(&mut self) {
+        self.sound.play_sound();
     }
 }
