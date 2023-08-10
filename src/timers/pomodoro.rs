@@ -1,4 +1,3 @@
-use std::borrow::ToOwned;
 use std::time::{Duration, Instant};
 
 use phf::{phf_map, Map};
@@ -11,7 +10,7 @@ static DEFAULT_DURATION: Map<&str, u64> = phf_map! {
 };
 
 pub struct PomodoroTimer {
-    current_phase: String,
+    current_phase: &'static str,
     target: Instant,
     previous_tick: Instant,
     current_tick: Instant,
@@ -21,7 +20,7 @@ pub struct PomodoroTimer {
 impl PomodoroTimer {
     pub fn new() -> PomodoroTimer {
         PomodoroTimer {
-            current_phase: "WORK".to_owned(),
+            current_phase: "WORK",
             target: Instant::now() + Duration::from_secs(DEFAULT_DURATION["WORK"]),
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
@@ -56,10 +55,10 @@ impl Timekeeper for PomodoroTimer {
     }
 
     fn advance(&mut self) {
-        self.current_phase = if self.current_phase == "WORK".to_owned() {
-            "REST".to_owned()
+        self.current_phase = if self.current_phase == "WORK" {
+            "REST"
         } else {
-            "WORK".to_owned()
+            "WORK"
         };
         self.reset();
     }
