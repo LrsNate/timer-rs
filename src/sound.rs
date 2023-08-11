@@ -30,6 +30,7 @@ impl SoundThread {
 
     fn run_loop(recv: Receiver<SoundThreadSignal>) {
         loop {
+            sleep(Duration::from_millis(50));
             match recv.try_recv() {
                 Err(TryRecvError::Disconnected) => break,
                 Ok(SoundThreadSignal::Close) => break,

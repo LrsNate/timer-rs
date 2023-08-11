@@ -24,7 +24,7 @@ fn main() -> Result<(), Error> {
     loop {
         state.timekeeper_mut().tick();
         term.draw(|f| draw_layout(f, &state))?;
-        if !poll(Duration::from_secs(0))? {
+        if !poll(Duration::from_millis(50))? {
             continue;
         }
         match read()? {
