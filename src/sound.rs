@@ -3,7 +3,7 @@ use std::io::BufReader;
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 use std::thread;
-use std::thread::{sleep, JoinHandle};
+use std::thread::sleep;
 use std::time::Duration;
 
 use rodio::{Decoder, OutputStream, Source};
@@ -16,15 +16,15 @@ pub enum SoundThreadSignal {
 
 pub struct SoundThread {
     send: Sender<SoundThreadSignal>,
-    _handle: JoinHandle<()>,
 }
 
 impl SoundThread {
     pub fn new() -> SoundThread {
         let (send, recv) = mpsc::channel();
+        thread::spawn(|| SoundThread::run_loop(recv));
         SoundThread {
             send,
-            _handle: thread::spawn(|| SoundThread::run_loop(recv)),
+            // _handle: ,
         }
     }
 
@@ -57,6 +57,5 @@ impl SoundThread {
 impl Drop for SoundThread {
     fn drop(&mut self) {
         self.send.send(SoundThreadSignal::Close).unwrap();
-        // self._handle.join().unwrap();
     }
 }
