@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
 use std::sync::mpsc;
-use std::sync::mpsc::{Receiver, Sender, TryRecvError};
+use std::sync::mpsc::{Receiver, Sender};
 use std::thread;
 use std::thread::{sleep, JoinHandle};
 use std::time::Duration;
@@ -30,11 +30,9 @@ impl SoundThread {
 
     fn run_loop(recv: Receiver<SoundThreadSignal>) {
         loop {
-            sleep(Duration::from_millis(50));
-            match recv.try_recv() {
-                Err(TryRecvError::Disconnected) => break,
+            match recv.recv_timeout(Duration::from_secs(5)) {
                 Ok(SoundThreadSignal::Close) => break,
-                Err(TryRecvError::Empty) => continue,
+                Err(_) => continue,
                 Ok(SoundThreadSignal::Sound) => SoundThread::play_beep_sound(),
             }
         }
