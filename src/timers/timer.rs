@@ -1,6 +1,6 @@
 use std::time::{Duration, Instant};
 
-use crate::timers::timekeeper::Timekeeper;
+use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
 const DEFAULT_DURATION: Duration = Duration::from_secs(60);
 
@@ -23,9 +23,16 @@ impl Timer {
 }
 
 impl Timekeeper for Timer {
-    fn tick(&mut self) {
+    fn tick(&mut self) -> Option<TimingEvent> {
         self.previous_tick = self.current_tick;
         self.current_tick = Instant::now();
+        if self.target.duration_since(self.current_tick) == Duration::ZERO
+            && self.target.duration_since(self.previous_tick) != Duration::ZERO
+        {
+            Some(TimingEvent::TimeUp)
+        } else {
+            None
+        }
     }
 
     fn reset(&mut self) {

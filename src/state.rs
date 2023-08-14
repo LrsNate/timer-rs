@@ -1,7 +1,6 @@
-use crate::sound::SoundThread;
 use crate::timers::pomodoro::PomodoroTimer;
 use crate::timers::stopwatch::Stopwatch;
-use crate::timers::timekeeper::Timekeeper;
+use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 use crate::timers::timer::Timer;
 
 pub struct AppState {
@@ -9,7 +8,6 @@ pub struct AppState {
     stopwatch: Stopwatch,
     timer: Timer,
     pomodoro: PomodoroTimer,
-    sound: SoundThread,
 }
 
 impl AppState {
@@ -19,7 +17,6 @@ impl AppState {
             stopwatch: Stopwatch::new(),
             timer: Timer::new(),
             pomodoro: PomodoroTimer::new(),
-            sound: SoundThread::new(),
         }
     }
 
@@ -39,7 +36,7 @@ impl AppState {
         timekeepers[self.selected_tab]
     }
 
-    pub fn play_sound(&mut self) {
-        self.sound.play_sound();
+    pub fn tick(&mut self) -> Option<TimingEvent> {
+        self.timekeeper_mut().tick()
     }
 }

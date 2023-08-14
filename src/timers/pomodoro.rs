@@ -2,9 +2,9 @@ use std::time::{Duration, Instant};
 
 use phf::{phf_map, Map};
 
-use crate::timers::timekeeper::Timekeeper;
+use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
-static DEFAULT_DURATION: Map<&str, u64> = phf_map! {
+static DEFAULT_DURATION: Map<&'static str, u64> = phf_map! {
     "WORK" => 25 * 60,
     "REST" => 5* 60
 };
@@ -30,9 +30,16 @@ impl PomodoroTimer {
 }
 
 impl Timekeeper for PomodoroTimer {
-    fn tick(&mut self) {
+    fn tick(&mut self) -> Option<TimingEvent> {
         self.previous_tick = self.current_tick;
         self.current_tick = Instant::now();
+        if self.target.duration_since(self.current_tick) == Duration::ZERO
+            && self.target.duration_since(self.previous_tick) != Duration::ZERO
+        {
+            Some(TimingEvent::TimeUp)
+        } else {
+            None
+        }
     }
 
     fn reset(&mut self) {

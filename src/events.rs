@@ -9,7 +9,6 @@ pub fn handle_key_event(keycode: KeyCode, state: &mut AppState) {
         KeyCode::Char('3') => state.switch_tab(2),
         KeyCode::Char('a') => state.timekeeper_mut().advance(),
         KeyCode::Char('r') => state.timekeeper_mut().reset(),
-        KeyCode::Char('b') => state.play_sound(),
         KeyCode::Char(' ') => state.timekeeper_mut().toggle_pause(),
         _ => (),
     }

@@ -6,7 +6,9 @@ use term::{close_terminal, init_terminal};
 
 use crate::draw::draw_layout;
 use crate::events::handle_key_event;
+use crate::sound::SoundThread;
 use crate::state::AppState;
+use crate::timers::timekeeper::TimingEvent;
 
 mod draw;
 mod events;
@@ -20,9 +22,12 @@ mod widgets;
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;
     let mut state = AppState::new();
+    let mut sound = SoundThread::new();
 
     loop {
-        state.timekeeper_mut().tick();
+        if let Some(TimingEvent::TimeUp) = state.tick() {
+            sound.play_sound();
+        }
         term.draw(|f| draw_layout(f, &state))?;
         if !poll(Duration::from_millis(50))? {
             continue;

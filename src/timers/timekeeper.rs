@@ -1,7 +1,11 @@
 use std::time::Duration;
 
+pub enum TimingEvent {
+    TimeUp,
+}
+
 pub trait Timekeeper {
-    fn tick(&mut self);
+    fn tick(&mut self) -> Option<TimingEvent>;
     fn reset(&mut self);
     fn toggle_pause(&mut self);
     fn advance(&mut self) {}

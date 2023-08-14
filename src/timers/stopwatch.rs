@@ -1,6 +1,6 @@
 use std::time::{Duration, Instant};
 
-use crate::timers::timekeeper::Timekeeper;
+use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
 pub struct Stopwatch {
     start: Instant,
@@ -21,9 +21,10 @@ impl Stopwatch {
 }
 
 impl Timekeeper for Stopwatch {
-    fn tick(&mut self) {
+    fn tick(&mut self) -> Option<TimingEvent> {
         self.previous_tick = self.current_tick;
         self.current_tick = Instant::now();
+        None
     }
 
     fn reset(&mut self) {
