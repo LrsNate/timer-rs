@@ -21,7 +21,7 @@ pub fn draw_status_block(
     if !extra_display.is_empty() {
         text = text.add(format!(" - {}", extra_display).as_str());
     }
-    let paragraph =
-        Paragraph::new(Span::raw(text)).style(Style::default().fg(Color::Black).bg(Color::Blue));
+    let paragraph = Paragraph::new(Span::raw(text))
+        .style(Style::default().fg(Color::Black).bg(Color::LightBlue));
     f.render_widget(paragraph, area);
 }
