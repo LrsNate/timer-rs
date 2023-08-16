@@ -1,8 +1,10 @@
 use std::io::Stdout;
+use std::ops::Add;
 
 use ratatui::backend::CrosstermBackend;
 use ratatui::layout::Rect;
-use ratatui::prelude::{Color, Span, Style};
+use ratatui::prelude::{Color, Style};
+use ratatui::text::Span;
 use ratatui::widgets::Paragraph;
 use ratatui::Frame;
 
@@ -14,7 +16,12 @@ pub fn draw_status_block(
     state: &AppState,
 ) {
     let latency = state.timekeeper().latency();
-    let text = Span::raw(format!("Latency: {} ms", latency.as_millis()));
-    let paragraph = Paragraph::new(text).style(Style::default().fg(Color::Black).bg(Color::Blue));
+    let mut text = format!("Latency: {} ms", latency.as_millis());
+    let extra_display = state.timekeeper().extra_display();
+    if !extra_display.is_empty() {
+        text = text.add(format!(" - {}", extra_display).as_str());
+    }
+    let paragraph =
+        Paragraph::new(Span::raw(text)).style(Style::default().fg(Color::Black).bg(Color::Blue));
     f.render_widget(paragraph, area);
 }

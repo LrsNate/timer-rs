@@ -1,4 +1,7 @@
+use std::ops::Add;
 use std::time::{Duration, Instant};
+
+use chrono::Local;
 
 use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
@@ -58,5 +61,12 @@ impl Timekeeper for Timer {
 
     fn latency(&self) -> Duration {
         self.current_tick.duration_since(self.previous_tick)
+    }
+
+    fn extra_display(&self) -> String {
+        let now = Local::now();
+        let remaining_time = chrono::Duration::from_std(self.time()).unwrap();
+        let target = now.add(remaining_time);
+        format!("Target time: {}", target.format("%H:%M:%S"))
     }
 }

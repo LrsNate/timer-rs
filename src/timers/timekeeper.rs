@@ -20,4 +20,8 @@ pub trait Timekeeper {
         let tenths = (elapsed.as_millis() - (elapsed.as_secs() as u128) * 1000) / 100;
         format!("{:02}{:02}{:01}", minutes, seconds, tenths)
     }
+
+    fn extra_display(&self) -> String {
+        String::new()
+    }
 }
