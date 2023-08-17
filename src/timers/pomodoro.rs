@@ -79,9 +79,13 @@ impl Timekeeper for PomodoroTimer {
     }
 
     fn extra_display(&self) -> String {
-        let now = Local::now();
-        let remaining_time = chrono::Duration::from_std(self.time()).unwrap();
-        let target = now.add(remaining_time);
-        format!("Target time: {}", target.format("%H:%M:%S"))
+        if self.paused_duration.is_some() {
+            String::new()
+        } else {
+            let now = Local::now();
+            let remaining_time = chrono::Duration::from_std(self.time()).unwrap();
+            let target = now.add(remaining_time);
+            format!("Target time: {}", target.format("%H:%M:%S"))
+        }
     }
 }
