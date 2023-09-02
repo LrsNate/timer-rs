@@ -35,7 +35,8 @@ impl Timekeeper for PomodoroTimer {
     fn tick(&mut self) -> Option<TimingEvent> {
         self.previous_tick = self.current_tick;
         self.current_tick = Instant::now();
-        if self.target.duration_since(self.current_tick) == Duration::ZERO
+        if self.paused_duration.is_none()
+            && self.target.duration_since(self.current_tick) == Duration::ZERO
             && self.target.duration_since(self.previous_tick) != Duration::ZERO
         {
             Some(TimingEvent::TimeUp)
