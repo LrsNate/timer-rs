@@ -85,8 +85,12 @@ impl Timekeeper for PomodoroTimer {
         } else {
             let now = Local::now();
             let remaining_time = chrono::Duration::from_std(self.time()).unwrap();
-            let target = now.add(remaining_time);
-            format!("Target time: {}", target.format("%H:%M:%S"))
+            if remaining_time.is_zero() {
+                String::new()
+            } else {
+                let target = now.add(remaining_time);
+                format!("Target time: {}", target.format("%H:%M:%S"))
+            }
         }
     }
 }
