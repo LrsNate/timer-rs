@@ -1,3 +1,4 @@
+use crate::settings::Settings;
 use crate::timers::pomodoro::PomodoroTimer;
 use crate::timers::stopwatch::Stopwatch;
 use crate::timers::timekeeper::{Timekeeper, TimingEvent};
@@ -11,12 +12,12 @@ pub struct AppState {
 }
 
 impl AppState {
-    pub fn new() -> AppState {
+    pub fn new(settings: Settings) -> AppState {
         AppState {
             selected_tab: 0,
             stopwatch: Stopwatch::new(),
-            timer: Timer::new(),
-            pomodoro: PomodoroTimer::new(),
+            timer: Timer::new(settings.timer),
+            pomodoro: PomodoroTimer::new(settings.pomodoro),
         }
     }
 

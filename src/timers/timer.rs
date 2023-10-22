@@ -2,12 +2,17 @@ use std::ops::Add;
 use std::time::{Duration, Instant};
 
 use chrono::Local;
+use serde::Deserialize;
 
 use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
-const DEFAULT_DURATION: Duration = Duration::from_secs(60);
+#[derive(Deserialize)]
+pub struct TimerSettings {
+    pub duration_seconds: u64,
+}
 
 pub struct Timer {
+    default_duration: Duration,
     target: Instant,
     previous_tick: Instant,
     current_tick: Instant,
@@ -15,12 +20,14 @@ pub struct Timer {
 }
 
 impl Timer {
-    pub fn new() -> Timer {
+    pub fn new(settings: TimerSettings) -> Timer {
+        let default_duration = Duration::from_secs(settings.duration_seconds);
         Timer {
-            target: Instant::now() + DEFAULT_DURATION,
+            default_duration,
+            target: Instant::now() + default_duration,
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
-            paused_duration: Some(DEFAULT_DURATION),
+            paused_duration: Some(default_duration),
         }
     }
 }
@@ -40,8 +47,8 @@ impl Timekeeper for Timer {
     }
 
     fn reset(&mut self) {
-        self.target = Instant::now() + DEFAULT_DURATION;
-        self.paused_duration = Some(DEFAULT_DURATION);
+        self.target = Instant::now() + self.default_duration;
+        self.paused_duration = Some(self.default_duration);
         self.tick();
     }
 

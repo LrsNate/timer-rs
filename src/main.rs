@@ -6,12 +6,14 @@ use term::{close_terminal, init_terminal};
 
 use crate::draw::draw_layout;
 use crate::events::handle_key_event;
+use crate::settings::get_settings;
 use crate::sound::SoundThread;
 use crate::state::AppState;
 use crate::timers::timekeeper::TimingEvent;
 
 mod draw;
 mod events;
+mod settings;
 mod shapes;
 mod sound;
 mod state;
@@ -21,7 +23,8 @@ mod widgets;
 
 fn main() -> Result<(), Error> {
     let mut term = init_terminal()?;
-    let mut state = AppState::new();
+    let settings = get_settings();
+    let mut state = AppState::new(settings);
     let mut sound = SoundThread::new();
 
     loop {

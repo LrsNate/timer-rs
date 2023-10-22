@@ -1,0 +1,5 @@
+timer:
+    duration_seconds: 60
+pomodoro:
+    work_duration_seconds: 1500
+    rest_duration_seconds: 300

@@ -1,17 +1,20 @@
+use std::collections::HashMap;
 use std::ops::Add;
 use std::time::{Duration, Instant};
 
 use chrono::Local;
-use phf::{phf_map, Map};
+use serde::Deserialize;
 
 use crate::timers::timekeeper::{Timekeeper, TimingEvent};
 
-static DEFAULT_DURATION: Map<&'static str, u64> = phf_map! {
-    "WORK" => 25 * 60,
-    "REST" => 5* 60
-};
+#[derive(Deserialize)]
+pub struct PomodoroSettings {
+    pub work_duration_seconds: u64,
+    pub rest_duration_seconds: u64,
+}
 
 pub struct PomodoroTimer {
+    default_durations: HashMap<&'static str, Duration>,
     current_phase: &'static str,
     target: Instant,
     previous_tick: Instant,
@@ -20,13 +23,20 @@ pub struct PomodoroTimer {
 }
 
 impl PomodoroTimer {
-    pub fn new() -> PomodoroTimer {
+    pub fn new(settings: PomodoroSettings) -> PomodoroTimer {
+        let default_work_duration = Duration::from_secs(settings.work_duration_seconds);
+        let default_rest_duration = Duration::from_secs(settings.rest_duration_seconds);
+        let default_durations = HashMap::from([
+            ("WORK", default_work_duration),
+            ("REST", default_rest_duration),
+        ]);
         PomodoroTimer {
+            default_durations,
             current_phase: "WORK",
-            target: Instant::now() + Duration::from_secs(DEFAULT_DURATION["WORK"]),
+            target: Instant::now() + default_work_duration,
             previous_tick: Instant::now(),
             current_tick: Instant::now(),
-            paused_duration: Some(Duration::from_secs(DEFAULT_DURATION["WORK"])),
+            paused_duration: Some(default_work_duration),
         }
     }
 }
@@ -46,8 +56,8 @@ impl Timekeeper for PomodoroTimer {
     }
 
     fn reset(&mut self) {
-        self.target = Instant::now() + Duration::from_secs(DEFAULT_DURATION[self.current_phase]);
-        self.paused_duration = Some(Duration::from_secs(DEFAULT_DURATION[self.current_phase]));
+        self.target = Instant::now() + self.default_durations[self.current_phase];
+        self.paused_duration = Some(self.default_durations[self.current_phase]);
         self.tick();
     }
 
