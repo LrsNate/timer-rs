@@ -1,6 +1,3 @@
-use std::io::Stdout;
-
-use ratatui::backend::CrosstermBackend;
 use ratatui::layout::Rect;
 use ratatui::prelude::Marker;
 use ratatui::widgets::canvas::Canvas;
@@ -9,7 +6,7 @@ use ratatui::Frame;
 use crate::shapes::{get_char_shape, get_separator_shape, get_small_char_shape};
 use crate::state::AppState;
 
-pub fn draw_timer_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
+pub fn draw_timer_block(f: &mut Frame, area: Rect, state: &AppState) {
     let s = state.timekeeper().display();
     let chars: Vec<char> = s.chars().collect();
     let canvas = Canvas::default()
