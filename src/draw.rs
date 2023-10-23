@@ -1,12 +1,10 @@
-use std::io::Stdout;
-
 use ratatui::layout::{Constraint, Direction, Layout};
-use ratatui::{backend::CrosstermBackend, Frame};
+use ratatui::Frame;
 
 use crate::state::AppState;
 use crate::widgets::{status, tabs, timing};
 
-pub fn draw_layout(f: &mut Frame<'_, CrosstermBackend<Stdout>>, state: &AppState) {
+pub fn draw_layout(f: &mut Frame, state: &AppState) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints(

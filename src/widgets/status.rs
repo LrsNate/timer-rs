@@ -1,7 +1,5 @@
-use std::io::Stdout;
 use std::ops::Add;
 
-use ratatui::backend::CrosstermBackend;
 use ratatui::layout::Rect;
 use ratatui::prelude::{Color, Style};
 use ratatui::text::Span;
@@ -10,11 +8,7 @@ use ratatui::Frame;
 
 use crate::state::AppState;
 
-pub fn draw_status_block(
-    f: &mut Frame<'_, CrosstermBackend<Stdout>>,
-    area: Rect,
-    state: &AppState,
-) {
+pub fn draw_status_block(f: &mut Frame, area: Rect, state: &AppState) {
     let latency = state.timekeeper().latency();
     let mut text = format!("Latency: {} ms", latency.as_millis());
     let extra_display = state.timekeeper().extra_display();

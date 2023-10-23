@@ -1,6 +1,3 @@
-use std::io::Stdout;
-
-use ratatui::backend::CrosstermBackend;
 use ratatui::layout::Rect;
 use ratatui::prelude::{Color, Line, Span, Style};
 use ratatui::widgets::{Block, Borders, Tabs};
@@ -8,7 +5,7 @@ use ratatui::Frame;
 
 use crate::state::AppState;
 
-pub fn draw_tabs_block(f: &mut Frame<'_, CrosstermBackend<Stdout>>, area: Rect, state: &AppState) {
+pub fn draw_tabs_block(f: &mut Frame, area: Rect, state: &AppState) {
     let titles = ["Stopwatch", "Timer", "Pomodoro"]
         .iter()
         .cloned()
